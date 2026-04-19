@@ -18,7 +18,7 @@
 ├── openapi/
 │   └── dvwa-openapi.yaml        # OpenAPI definition file for DVWA endpoints
 └── scripts/
-└── process_results.py       # Script for processing GoTestWAF CSV output
+    └── process_results.py       # Script for processing GoTestWAF CSV output
 ```
 ## Description
 
