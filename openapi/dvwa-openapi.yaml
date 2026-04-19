@@ -1,0 +1,277 @@
+openapi: 3.0.1
+info:
+  title: DVWA WAF Testing
+  version: '1.0'
+
+paths:
+
+  # GET y POST — usa $_REQUEST
+  /vulnerabilities/sqli/:
+    get:
+      operationId: sqli_get
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "1' OR '1'='1"
+        - name: Submit
+          in: query
+          required: true
+          schema:
+            type: string
+            example: Submit
+      responses:
+        '200':
+          description: ok
+    post:
+      operationId: sqli_post
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [id, Submit]
+              properties:
+                id:
+                  type: string
+                  example: "1' OR '1'='1"
+                Submit:
+                  type: string
+                  example: Submit
+      responses:
+        '200':
+          description: ok
+
+  # GET y POST — usa $_REQUEST para ip
+  /vulnerabilities/exec/:
+    get:
+      operationId: exec_get
+      parameters:
+        - name: ip
+          in: query
+          required: true
+          schema:
+            type: string
+            example: '127.0.0.1; id'
+        - name: Submit
+          in: query
+          required: true
+          schema:
+            type: string
+            example: Submit
+      responses:
+        '200':
+          description: ok
+    post:
+      operationId: exec_post
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [ip, Submit]
+              properties:
+                ip:
+                  type: string
+                  example: '127.0.0.1; id'
+                Submit:
+                  type: string
+                  example: Submit
+      responses:
+        '200':
+          description: ok
+
+  # Solo GET — usa $_GET
+  /vulnerabilities/sqli_blind/:
+    get:
+      operationId: sqli_blind_get
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "1' AND SLEEP(5)-- -"
+        - name: Submit
+          in: query
+          required: true
+          schema:
+            type: string
+            example: Submit
+      responses:
+        '200':
+          description: ok
+
+  # Solo GET — usa $_GET
+  /vulnerabilities/fi/:
+    get:
+      operationId: fi_get
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: string
+            example: '../../../../../../etc/passwd'
+      responses:
+        '200':
+          description: ok
+
+  # Solo GET — usa $_GET
+  /vulnerabilities/xss_r/:
+    get:
+      operationId: xss_r_get
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+            example: '<script>alert(1)</script>'
+      responses:
+        '200':
+          description: ok
+
+  # Solo GET — usa $_GET
+  /vulnerabilities/brute/:
+    get:
+      operationId: brute_get
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+            example: admin
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+            example: password
+        - name: Login
+          in: query
+          required: true
+          schema:
+            type: string
+            example: Login
+      responses:
+        '200':
+          description: ok
+
+  # Solo GET — usa $_GET
+  /vulnerabilities/csrf/:
+    get:
+      operationId: csrf_get
+      parameters:
+        - name: password_new
+          in: query
+          required: true
+          schema:
+            type: string
+            example: hacked123
+        - name: password_conf
+          in: query
+          required: true
+          schema:
+            type: string
+            example: hacked123
+        - name: Change
+          in: query
+          required: true
+          schema:
+            type: string
+            example: Change
+      responses:
+        '200':
+          description: ok
+
+  # Solo GET — redirige a URL externa
+  /vulnerabilities/open_redirect/:
+    get:
+      operationId: open_redirect_get
+      parameters:
+        - name: redirect
+          in: query
+          required: true
+          schema:
+            type: string
+            example: 'http://evil.com'
+      responses:
+        '200':
+          description: ok
+
+  # Solo POST — usa $_POST
+  /vulnerabilities/xss_s/:
+    post:
+      operationId: xss_s_post
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [txtName, mtxMessage, btnSign]
+              properties:
+                txtName:
+                  type: string
+                  example: attacker
+                mtxMessage:
+                  type: string
+                  example: '<script>alert(1)</script>'
+                btnSign:
+                  type: string
+                  example: Sign Guestbook
+      responses:
+        '200':
+          description: ok
+
+  # Solo POST — paso 2 del captcha vulnerable
+  /vulnerabilities/captcha/:
+    post:
+      operationId: captcha_post
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [step]
+              properties:
+                step:
+                  type: string
+                  example: '2'
+                password_new:
+                  type: string
+                  example: hacked123
+                password_conf:
+                  type: string
+                  example: hacked123
+                Change:
+                  type: string
+                  example: Change
+      responses:
+        '200':
+          description: ok
+
+  # Solo POST — genera weak session ID
+  /vulnerabilities/weak_id/:
+    post:
+      operationId: weak_id_post
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                Generate:
+                  type: string
+                  example: Generate
+      responses:
+        '200':
+          description: ok
