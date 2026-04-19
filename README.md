@@ -13,11 +13,13 @@
 ---
 
 ## Repository Structure
+
+```bash
 ├── openapi/
 │   └── dvwa-openapi.yaml        # OpenAPI definition file for DVWA endpoints
 └── scripts/
 └── process_results.py       # Script for processing GoTestWAF CSV output
-
+```
 ## Description
 
 This repository contains the supporting materials used in the experimental evaluation of open-source Web Application Firewalls (WAFs) under a comparative study designed for SME environments with non-dedicated hardware.
